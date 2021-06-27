@@ -1,0 +1,71 @@
+.margin1{
+    margin-left: 8%;
+}
+.margin2{
+    margin-right: 8%;
+}
+.column{
+    margin-top: 2%;
+}
+footer h5{
+    text-align: center;
+    font-family: serif;
+    font-size: 15px;
+}
+.border{
+    background-color:white;
+    border:solid;
+    margin-top:3%;
+    margin-left:1%;
+    margin-right:1%;
+    padding:10px 0px 10px 0px;
+}
+footer{
+    margin-top:5%;
+}
+h4{
+    margin-top:5%;
+    font-family:serif;
+    font-size:25px;
+}
+a{
+    font-family: serif;
+    color:white !important;
+}
+nav{
+    background-color: #065e86 !important;
+}
+body{
+    background-color: #e2e2e2;
+}
+#form{
+    margin-top:1%;
+    background-color:#065e86;
+    width:95%;
+    max-width: 350px !important;
+    padding:20px 5px 20px 5px;
+}
+.input {
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+}
+#form button {
+    font-family:serif;
+    font-size:18px;
+    background-color: #000000c4 !important;
+}
+label{
+    font-size: 18px;
+    font-family:serif !important;
+    color:rgb(255, 255, 255);
+}
+h5{
+    font-size: 16px;
+    font-family:serif !important;
+    color:rgb(0 0 0);
+    text-align:center;
+}
+#logo{
+    margin-top:-4px;
+}

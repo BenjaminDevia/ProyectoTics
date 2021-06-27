@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- CSS only -->
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+        <!-- JS, Popper.js, and jQuery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="cssFiles/login.css">
+    </head>
+    <body>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+        <header>
+            <nav class="navbar navbar-expand-lg navbar-light">
+              <a id="logo" class="navbar-brand margin1" href="index.html">SmartDispenser</a>
+              <button id="menu" class="navbar-toggler margin2" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+              </button>
+                <div class="collapse navbar-collapse margin2" id="navbarTogglerDemo02">
+                  <div class="navbar-nav mr-auto mt-2 mt-lg-0">
+                    <a class="nav-item nav-link" href="#">Producto</a>
+                    <a class="nav-item nav-link" href="#">Ofertas</a>
+                    <a class="nav-item nav-link" href="#">Quienes somos</a>
+
+                  </div>
+                  <div class="navbar-nav my-2 my-lg-0">
+                    <a class="nav-item nav-link" href="register.html">Registrarse</a>
+                  </div>
+                </div>
+            </nav>
+        </header>
+
+        <center>
+            <h4>Inicia sesión para ingresar a tu estación de monitoreo</h4>
+            <div id="form" class="container-lg">
+                <div class="mb-3">
+                  <label for="exampleInputEmail1" class="form-label d-flex justify-content-center">Nombre Usuario</label>
+                  <input id="user" type="email" class="form-control input" required  placeholder="Ej: Juanpa">
+                </div>
+                <div class="mb-3">
+                  <label for="exampleInputPassword1" class="form-label d-flex justify-content-center">Contraseña</label>
+                  <input id="password" type="password" class="form-control input">
+                </div>
+                <h5>¿Aun no estas registrad@? Cotiza <a href="#">aqui</a> nuestros productos y se parte de nuestro equipo</h5>
+                <button id="boton" type="submit" class="btn btn-primary input ">Ingresar</button>
+            </div>
+        </center>
+
+
+        <footer>
+            <h5>SmartDispenser Company 2021 ø Derechos reservados</h5>
+        </footer>
+    </body>
+    <script>
+      $('#boton').click(function(){
+        if($('#user').val()!="" && $('#password').val()!=""){
+          const data2 = {"user": $('#user').val(), "password": $('#password').val()};
+          console.log(data2);
+          fetch("http://localhost:8000/login",{
+            method: 'POST',
+            headers: {
+              "Content-Type":"application/json"
+            },
+            body:  JSON.stringify(data2)
+          })
+          .then(function(res) {
+            return res.json();
+          })    
+          .then(function(data) {
+            if(data == false){
+              alert("Error, usuario o contraseña incorrecto, intente nuevamente");
+            }
+            else{
+              localStorage.setItem("user", data);
+              window.location.replace('/index.html');
+            }
+          })
+          .catch(function(err) { console.log("error");
+          });
+        }
+        else{
+          alert('Error, debe completar todos los campos');
+        }
+      })
+    </script>
+</html>

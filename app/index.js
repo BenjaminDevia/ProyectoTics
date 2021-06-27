@@ -1,7 +1,10 @@
 const express = require('express')
 const app = express()
-const port = 3000
-
+const port = 8080
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
 
 app.use(express.static('public'));
 app.listen(port, () => {

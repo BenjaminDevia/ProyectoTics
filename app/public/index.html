@@ -16,43 +16,60 @@
     <body>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
         <header>
-            <nav class="navbar navbar-expand-lg navbar-light">
-              <a id="logo" class="navbar-brand margin1" href="#">SmartDispenser</a>
-              <button id="menu" class="navbar-toggler margin2" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-              </button>
-                <div class="collapse navbar-collapse margin2" id="navbarTogglerDemo02">
-                  <div class="navbar-nav mr-auto mt-2 mt-lg-0">
-                    <a class="nav-item nav-link" href="#">Producto</a>
-                    <a class="nav-item nav-link" href="#">Ofertas</a>
-                    <a class="nav-item nav-link " href="#">Quienes somos</a>
-                  </div>
-                  <div class="navbar-nav my-2 my-lg-0">
-                    <a class="nav-item nav-link" href="register.html">Registrarse</a>
-                  </div>
+          <nav class="navbar navbar-expand-lg navbar-light">
+            <a id="logo" class="navbar-brand margin1 disabled" href="index.html">SmartDispenser</a>
+            <button id="menu" class="navbar-toggler margin2" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02" aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+              <div class="collapse navbar-collapse margin2" id="navbarTogglerDemo02">
+                <div class="navbar-nav mr-auto mt-2 mt-lg-0">
+                  <a class="nav-item nav-link" href="#">Producto</a>
+                  <a class="nav-item nav-link" href="#">Ofertas</a>
+                  <a class="nav-item nav-link " href="#">Quienes somos</a>
+                  <a id="link3" class="nav-item nav-link" style="display: none;" href="estacion.html">Monitorear estación</a>
                 </div>
-            </nav>
-        </header>
+                <div class="navbar-nav my-2 my-lg-0">
+                  <a id="link1" class="nav-item nav-link" href="login.html"><span id="nombre1"></span></a>
+                  <a id="link2" class="nav-item nav-link"><span id="nombre2"></span></a>
+                </div>
+              </div>
+          </nav>
+      </header>
 
         <center>
-            <h4>Logueate para ingresar a tu estacion de monitore</h4>
-            <div id="form" class="container-lg">
-                <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label d-flex justify-content-center">Nombre Usuario</label>
-                  <input id="user" type="email" class="form-control input">
-                </div>
-                <div class="mb-3">
-                  <label for="exampleInputPassword1" class="form-label d-flex justify-content-center">Contraseña</label>
-                  <input id="password" type="password" class="form-control input">
-                </div>
-                <h5>¿Aun no estas registrad@? Cotiza <a href="#">aqui</a> nuestros productos y se parte de nuestro equipo</h5>
-                <button id="boton" type="submit" class="btn btn-primary input ">Ingresar</button>
+        <div class="container margin column">
+            <div class="row">
+              <div class="col-sm border">
+                <h4>Previene el Covid-19 en tu negocio</h4>
+                <img src="https://lh3.googleusercontent.com/proxy/XlJdo7NsSChzSIppTnE20RhlZJTVohGAvTdPrg5cfw9BKPjaO_hLxgfuFHxt3uRWPaYgLrya7S0FcHBAxgVj8Yx23zTovtvnrCZUawxhvj40SCLfgGki_0fFZRFEUyuPt0M_DC_2iZQia20" height="280px">
+              </div>
+              <div class="col-sm border">
+                <h4>Asesoramiento y sugerencias</h4>
+                <img src="https://image.freepik.com/vector-gratis/servicio-consultoria-asesoria-financiera-soporte-experto-personajes-dibujos-animados-empresaria-asesor-servicio-asistencia-asesoramiento-empresarial-vector-ilustracion-metafora-concepto-aislado_335657-2733.jpg" alt="" height="280px">
+              </div>
+              <div class="col-sm border">
+                <h4>Por qué ser cliente nuestro?</h4>
+                <img src="https://image.freepik.com/vector-gratis/alguien-presentando-diagrama_65395-178.jpg" height="280px">
+              </div>
             </div>
+        </div>
         </center>
-
 
         <footer>
             <h5>SmartDispenser Company 2021 ø Derechos reservados</h5>
         </footer>
     </body>
+    <script>
+      $('#nombre1').html("Iniciar sesión");
+      $('#nombre2').html("Registrarse");
+      $('#link2').attr('href', 'register.html');
+      if(localStorage.getItem("user")!= null){
+        $('#nombre1').html(localStorage.getItem("user"));
+        $('#nombre2').html("Cerrar sesión");
+        $('#link1').addClass('disabled');
+        $('#link2').attr('href', 'logout.html');
+        $('#link3').css("display","block")
+
+      }
+    </script>
 </html>
