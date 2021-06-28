@@ -76,6 +76,7 @@
               alert("Error, usuario o contraseña incorrecto, intente nuevamente");
             }
             else{
+              localStorage.setItem("id", $('#user').val());
               localStorage.setItem("user", data);
               window.location.replace('/index.html');
             }

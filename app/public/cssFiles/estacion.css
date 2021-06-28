@@ -1,0 +1,37 @@
+.margin1{
+    margin-left: 8%;
+}
+.margin2{
+    margin-right: 8%;
+}
+footer h5{
+    text-align: center;
+    font-family: serif;
+    font-size: 15px;
+}
+
+footer{
+    margin-top:5%;
+}
+a{
+    font-family: serif;
+    color:white !important;
+}
+nav{
+    background-color: #065e86 !important;
+}
+body{
+    background-color: #e2e2e2;
+}
+#logo{
+    margin-top:-4px;
+}
+.width{
+    max-width: 700px !important;
+    max-height: max-content;
+    margin-left: 8%;
+    margin-right: 8%;
+    margin-top: 5%;
+    background-color: white;
+    padding: 10px;
+}
