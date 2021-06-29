@@ -55,30 +55,44 @@ app.post('/login', (req,res) => {
 });
 
 app.post('/find', (req,res) => {
-	db.collection('datos').find({user: req.body.user}).toArray(function(err, result){
+	db.collection('datos').find({user: req.body.user, dia: req.body.dia, mes: req.body.mes, año: req.body.año}).toArray(function(err, result){
 		if (err) throw err;
 		res.send(result);
 	});
 });
 
 app.post('/add', (req,res) => {
-	var aux2 = 9;
-	const day = 1; 
-	for(var i=0; i<=100; i++){
-		var aux = Math.random() * (38.2 - 35) + 35 + Math.random();
-		if(i==0){
-			aux2 = aux2;
+	db.collection('datos').find({user: req.body.user, dia: req.body.dia, mes: req.body.mes, año: req.body.año}).toArray(function(err, result){
+		if (err) throw err;
+		if(result.length != 0){
+			res.json(false);
 		}
 		else{
-			aux2 = aux2 + 0.1;
+			var aux2 = 9;
+			for(var i=0; i<=90; i++){
+				var aux = Math.random() * (38.2 - 35) + 35 + Math.random();
+				if(i==0){
+					aux2 = aux2;
+				}
+				else{
+					aux2 = aux2 + 0.1;
+				}
+				db.collection("datos").insertOne({user: req.body.user, dia: req.body.dia, mes: req.body.mes, año: req.body.año, hora: aux2.toFixed(2), temp: aux.toFixed(1)}, function(err, result){
+					if(err) throw err;
+					//console.log(result);
+				});
+				//console.log(aux.toFixed(1)+"--"+ aux2.toFixed(1));
+			}
+			res.json(true);
 		}
-		db.collection("datos").insertOne({user: req.body.user, hora: aux2.toFixed(2), temp: aux.toFixed(1)}, function(err, result){
-			if(err) throw err;
-			//console.log(result);
-		});
-		//console.log(aux.toFixed(1)+"--"+ aux2.toFixed(1));
-	}
-	res.json(true);
+	});
+});
+
+app.get('/remove', (req,res) => {
+	db.collection('datos').deleteMany({}, function(err, result){
+		if (err) throw err;
+		res.json(true);
+	});
 });
 
 

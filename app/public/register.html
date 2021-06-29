@@ -39,11 +39,11 @@
             <div id="form" class="container-lg">
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label d-flex justify-content-center">Nombre y Apellido</label>
-                  <input id="nombre" type="text" class="form-control input" required  placeholder="Ej: Juan Perez">
+                  <input id="nombre" type="text" class="form-control input" maxlength="30" required  placeholder="Ej: Juan Perez">
                 </div>
                 <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label d-flex justify-content-center">Rut</label>
-                  <input id="rut" type="text" class="form-control input" required  placeholder="Ej: 12345678-9">
+                  <label for="exampleInputEmail1" class="form-label d-flex justify-content-center">Rut (sin puntos ni guion)</label>
+                  <input id="rut" type="number" class="form-control input" required  placeholder="Ej: 201112229">
                 </div>
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label d-flex justify-content-center">Correo electronico</label>
@@ -51,10 +51,10 @@
                 </div>
                 <div class="mb-3">
                   <label for="exampleInputEmail1" class="form-label d-flex justify-content-center">Direccion</label>
-                  <input id="direccion" type="text" class="form-control input" required  placeholder="Ej: calle falsa, ciudad falsa">
+                  <input id="direccion" type="text" class="form-control input" maxlength="60" required  placeholder="Ej: calle falsa, ciudad falsa">
                 </div>
                 <div class="mb-3">
-                  <label for="exampleInputEmail1" class="form-label d-flex justify-content-center">Telefono</label>
+                  <label for="exampleInputEmail1" class="form-label d-flex justify-content-center">Telefono (sin +56)</label>
                   <input id="fono" type="number" class="form-control input" required  placeholder="Ej:912345678">
                 </div>
                 <div class="mb-3">
@@ -74,7 +74,14 @@
     </body>
     <script>
       $('#boton').click(function(){
-        if($('#nombre').val()!="" && $('#rut').val()!="" && $('#mail').val()!="" && $('#direccion').val()!="" && $('#fono').val()!="" && $('#user').val()!="" && $('#password').val()!=""){
+        if(parseInt($('#fono').val())>999999999 || parseInt($('#fono').val())<900000000){
+          alert("Error, numero de telefono ingresado no es valido (debe tener 9 digitos, el primero deber ser 9)");
+        }
+        else if(parseInt($('#rut').val())>999999999 || parseInt($('#rut').val())<11111111){
+          alert("Error, el rut ingresado no es valido (debe tener 8 o 9 digitos)")
+        }
+
+        else if($('#nombre').val()!="" && $('#rut').val()!="" && $('#mail').val()!="" && $('#direccion').val()!="" && $('#fono').val()!="" && $('#user').val()!="" && $('#password').val()!=""){
           const data2 = {"name": $('#nombre').val(), "rut": $('#rut').val(), "mail": $('#mail').val(), "address":  $('#direccion').val(), "fono": $('#fono').val(), "user": $('#user').val(), "password": $('#password').val()};
           //console.log(data2);
           fetch("http://localhost:8000/register",{
@@ -102,7 +109,7 @@
           });
         }
         else{
-          alert("Error, debe completar todos los campos");
+          alert("Error, los datos ingresados no son validos, intente nuevamente");
         }
       })
     </script>

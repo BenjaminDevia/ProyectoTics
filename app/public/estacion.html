@@ -39,11 +39,34 @@
             </nav>
         </header>
         <center>
-          <div class="width">
-            <canvas id="grafica"></canvas>
-            <script src="graphic.js"></script>
+          <div id="form">
+            <h3>Ingresa la fecha para buscar registros</h3>
+            <div class="form-inline justify-content-center">
+              <input id="fecha" type="date" id="start" name="trip-start" min="2021-01-01" max="2021-06-28">
+            </div>
+            <button id="boton0" type="submit" class="btn btn-primary">Buscar</button>
           </div>
-          <button id="boton" type="submit" class="btn btn-primary input ">add +</button>
+          
+
+          <div id="grafico" class="width" style="display: none;">
+            <canvas id="grafica"></canvas>
+          </div>
+
+          <div id="resultados" style="display: none;">
+            <h3 class="title">Resultados del analisis</h3>
+            <h4 class="set">Cantidad total de clientes: <span id="total"></span></h4>
+            <h4 class="set">Cantidad de clientes que sí presentaron fiebre: <span id="con"></span></h4>
+            <h4 class="set">Cantidad de clientes que no presentaron fiebre: <span id="sin"></span></h4>
+            <h4 class="set">Hora critica (mayores casos de fiebre):  <span id="hora"></span></h4>
+          </div>
+
+          <div id="botones" class="boton" style="display: none;">
+            <button id="boton1" type="submit" class="btn btn-primary botones">Add+</button>
+            <button id="boton2" type="submit" class="btn btn-primary botones">Refresh</button>
+          </div>
+
+          
+          
         </center>
        
       
@@ -60,17 +83,145 @@
           $('#nombre2').html("Cerrar sesión");
           $('#link1').addClass('disabled');
           $('#link2').attr('href', 'logout.html');
-          $('#link3').css("display","block")
+          $('#link3').css("display","block");
         }
-        const data2 = {"user": localStorage.getItem("id")};
-        $('#boton').click(function(){
-          //$('#boton').css("display","none");
+        $('#boton0').click(function(){
+          if($('#fecha').val() != "" && $('#fecha').val() <= '2021-06-28'){
+           var arr1 = $('#fecha').val().split('-');
+            $('#form').css("display","none");
+            $('#grafico').css("display","block");
+            $('#botones').css("display","block");
+            localStorage.setItem("dia", arr1[2]);
+            localStorage.setItem("mes", arr1[1]);
+            localStorage.setItem("año", arr1[0]);
+            
+            const data1 = {"user": localStorage.getItem("id"), "dia": localStorage.getItem("dia"), "mes": localStorage.getItem("mes"), "año": localStorage.getItem("año")};
+            console.log(data1);
+            fetch("http://localhost:8000/find",{
+                method: 'POST',
+                headers: {
+                    "Content-Type":"application/json"
+                },
+                body:  JSON.stringify(data1)
+            })
+            .then(function(res) {
+                return res.json();
+            })    
+            .then(function(datos) {
+                //console.log(datos);
+                var aux1 = new Array();
+                var aux2 = new Array();
+                for(var i=0; i<datos.length;i++){
+                    aux1.push(datos[i].hora);
+                    aux2.push(datos[i].temp);
+                }
+                // Obtener una referencia al elemento canvas del DOM
+                const $grafica = document.querySelector("#grafica");
+                // Las etiquetas son las que van en el eje X. 
+                const etiquetas = aux1;
+                // Podemos tener varios conjuntos de datos. Comencemos con uno
+                var title = null;
+                if(datos.length == 0){
+                  title = "No existen registros asociados a la fecha "+localStorage.getItem("dia")+"/"+localStorage.getItem("mes")+"/"+localStorage.getItem("año");
+                }
+                else{
+                  var aux_1 = 0;
+                  var aux_2 = 0;
+                  var arr = [0,0,0,0,0,0,0,0,0,0];
+                  var indice = 0;
+                  var p = parseInt(datos[0].hora,10);
+                  var x = 0;
+                  let y = 0;
+                  var z = [9,10,11,12,13,14,15,16,17,18];
+                  for(var i=0; i<datos.length;i++){
+                    if(datos[i].temp > 37){
+                      aux_1 = aux_1 + 1;
+                      var p1 = parseInt(datos[i].hora,10);
+                      if(p1 != p){
+                        indice = indice + 1;
+                        p = parseInt(datos[i].hora,10);
+                      }
+                      arr[indice] = arr[indice]+1;
+                    }
+                    else{
+                      aux_2 = aux_2 + 1;
+                    }
+                    if(i+1 == datos.length){
+                      for(var j=0;j<arr.length;j++){
+                        if(x < arr[j]){
+                          x = arr[j];
+                          y = j;
+                        }
+                      }
+                    }
+                  }
+                  
+                  var aux_3 = (aux_1/datos.length)*100;
+                  var aux_4 = (aux_2/datos.length)*100;
+
+                  title = "Registros "+localStorage.getItem("dia")+"/"+localStorage.getItem("mes")+"/"+localStorage.getItem("año");
+                  $('#resultados').css("display","block");
+                  $('#total').html(datos.length);
+                  $('#con').html(aux_1+" ("+aux_3.toFixed(2)+"%)");
+                  $('#sin').html(aux_2+" ("+aux_4.toFixed(2)+"%)");
+                  $('#hora').html("Entre las "+z[y]+" y las "+z[y+1]);
+                }
+                const datosVentas2020 = {
+                    label: title,
+                    data: aux2, // La data es un arreglo que debe tener la misma cantidad de valores que la cantidad de etiquetas
+                    backgroundColor: 'rgba(54, 162, 235, 0.2)', // Color de fondo
+                    borderColor: 'rgba(54, 162, 235, 1)', // Color del borde
+                    borderWidth: 1,// Ancho del borde
+                };
+                new Chart($grafica, {
+                    type: 'line',// Tipo de gráfica
+                    data: {
+                        labels: etiquetas,
+                        datasets: [
+                            datosVentas2020,
+                            // Aquí más datos...
+                        ]
+                    },
+                    options : {
+                        scales: {
+                        yAxes: [{
+                            scaleLabel: {
+                            display: true,
+                            labelString: 'Temperatura [°C]'
+                            }
+                        }],
+                        xAxes: [{
+                            scaleLabel: {
+                            display: true,
+                            labelString: 'Hora '
+                            }
+                        }]
+                        }
+                    }
+                });
+
+            })
+            .catch(function(err) {
+                console.log("error");
+            });
+          }
+          else{
+            alert("Error, debe ingresar una fecha entre el 01-01-2021 al 28-06-2021");
+          }
+        });
+        
+        $('#boton2').click(function(){
+          location.reload();
+        });
+
+        $('#boton1').click(function(){
+          const data1 = {"user": localStorage.getItem("id"), "dia": localStorage.getItem("dia"), "mes": localStorage.getItem("mes"), "año": localStorage.getItem("año")};
           fetch("http://localhost:8000/add",{
               method: 'POST',
               headers: {
                   "Content-Type":"application/json"
               },
-              body:  JSON.stringify(data2)
+              body:  JSON.stringify(data1)
           })
           .then(function(res) {
               return res.json();
