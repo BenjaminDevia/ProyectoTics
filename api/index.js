@@ -77,7 +77,22 @@ app.post('/add', (req,res) => {
 				else{
 					aux2 = aux2 + 0.1;
 				}
-				db.collection("datos").insertOne({user: req.body.user, dia: req.body.dia, mes: req.body.mes, año: req.body.año, hora: aux2.toFixed(2), temp: aux.toFixed(1)}, function(err, result){
+				var aux3 = Math.floor(parseInt(aux2));
+				var aux4 = (aux2 - Math.floor(aux2));
+				var aux6 = aux4.toFixed(1)*60;
+
+				if(parseInt(aux6) == 6 || parseInt(aux6) == 0){
+					aux6 = '0'+aux6.toString();
+				}
+				if(parseInt(aux6) == 60){
+					aux6 = '00';
+					aux3 = aux3 + 1;
+					var aux5 = aux3.toString()+":"+aux6;
+				}
+				else{
+					var aux5 = aux3.toString()+":"+aux6;
+				} 
+				db.collection("datos").insertOne({user: req.body.user, dia: req.body.dia, mes: req.body.mes, año: req.body.año, hora: aux5, temp: aux.toFixed(1)}, function(err, result){
 					if(err) throw err;
 					//console.log(result);
 				});
